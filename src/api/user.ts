@@ -2,32 +2,28 @@ import { PrismaClient } from '@prisma/client';
 import express, { Router } from 'express';
 
 const prisma = new PrismaClient();
-const router = Router();
+const userRouter = Router();
 
-router.get(
-  '/user/:id?',
-  async (req: express.Request, res: express.Response) => {
-    const id = Number(req.params.id);
-    if (id) {
-      const foundUser = await prisma.user.findUnique({
-        where: { id },
-        select: { username: true, email: true, orders: true },
-      });
-
-      if (!foundUser)
-        return res.status(404).send({ message: 'User not found' });
-
-      return res.json(foundUser);
-    }
-
-    const allUsers = await prisma.user.findMany({
+userRouter.get('/:id?', async (req: express.Request, res: express.Response) => {
+  const id = Number(req.params.id);
+  if (id) {
+    const foundUser = await prisma.user.findUnique({
+      where: { id },
       select: { username: true, email: true, orders: true },
     });
-    return res.json(allUsers);
-  }
-);
 
-router.post('/user', async (req: express.Request, res: express.Response) => {
+    if (!foundUser) return res.status(404).send({ message: 'User not found' });
+
+    return res.json(foundUser);
+  }
+
+  const allUsers = await prisma.user.findMany({
+    select: { username: true, email: true, orders: true },
+  });
+  return res.json({ users: allUsers });
+});
+
+userRouter.post('/', async (req: express.Request, res: express.Response) => {
   const { username, password, email } = req.body;
   try {
     const newUser = await prisma.user.create({
@@ -41,8 +37,8 @@ router.post('/user', async (req: express.Request, res: express.Response) => {
   }
 });
 
-router.patch(
-  '/user/:id',
+userRouter.patch(
+  '/:id',
   async (req: express.Request, res: express.Response) => {
     const id = Number(req.params.id);
     const { password, newPassword, newEmail } = req.body;
@@ -72,4 +68,4 @@ router.patch(
   }
 );
 
-export default router;
+export default userRouter;

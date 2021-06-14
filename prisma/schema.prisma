@@ -10,21 +10,28 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Spec {
+model SpecName {
   id         Int      @id @default(autoincrement())
   name       String
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  specs      Spec[]
+}
+
+model Spec {
+  id         Int      @id @default(autoincrement())
   value      String?
   product    Product  @relation(fields: [productId], references: [id])
   productId  Int
-  category   Category @relation(fields: [categoryId], references: [id])
-  categoryId Int
+  specName   SpecName @relation(fields: [specNameId], references: [id])
+  specNameId Int
 }
 
 model Category {
-  id       Int       @id @default(autoincrement())
-  name     String
-  products Product[]
-  specs    Spec[]
+  id        Int        @id @default(autoincrement())
+  name      String
+  products  Product[]
+  specNames SpecName[]
 }
 
 model Product {
@@ -32,8 +39,8 @@ model Product {
   name       String
   price      Float
   category   Category    @relation(fields: [categoryId], references: [id])
-  orderItems OrderItem[]
   categoryId Int
+  orderItems OrderItem[]
   specs      Spec[]
 }
 
