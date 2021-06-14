@@ -1,4 +1,5 @@
 import express, { ErrorRequestHandler } from 'express';
+import path from 'path';
 import categoryRouter from './api/category';
 import productRouter from './api/product';
 import userRouter from './api/user';
@@ -12,11 +13,12 @@ const jsonErrorHandler: ErrorRequestHandler = (
   res: express.Response,
   next: express.NextFunction
 ) => {
-  console.log('ERROR');
   res.status(500).json({ error });
 };
 
 app.use(express.json());
+
+app.use(express.static(path.resolve('/client/dist')));
 
 app.use('/api/user', userRouter);
 app.use('/api/product', productRouter);

@@ -4,14 +4,19 @@
   "main": "src/app.ts",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "run-p -l build:*",
+    "build:server": "tsc",
+    "build:client": "cd client && yarn build",
     "postinstall": "yarn build",
-    "dev": "nodemon",
+    "dev": "run-p -l dev:*",
+    "dev:server": "nodemon",
+    "dev:client": "cd client && yarn start",
     "start": "node dist/app.js"
   },
   "dependencies": {
     "@prisma/client": "^2.24.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "npm-run-all": "^4.1.5"
   },
   "devDependencies": {
     "@types/express": "^4.17.12",
