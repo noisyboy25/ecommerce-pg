@@ -10,6 +10,7 @@ const CategoryList = () => {
 
   const fetchCategories = async () => {
     const { categories } = await (await fetch('/api/category')).json();
+    // TODO: Can't perform a React state update on an unmounted component.
     setCategoryList(categories);
   };
 

@@ -1,21 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-const ProductList = () => {
-  const [productList, setProductList] = useState<Record<string, any>[]>([]);
-
+const ProductList = ({
+  fetchProducts,
+  productList,
+}: {
+  fetchProducts: () => Promise<any>;
+  productList: any[];
+}) => {
   const deleteProduct = async (id: number) => {
     await fetch(`/api/product/${id}`, { method: 'DELETE' });
     fetchProducts();
   };
-
-  const fetchProducts = async () => {
-    const { products } = await (await fetch('/api/product')).json();
-    setProductList(products);
-  };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
 
   return (
     <div>

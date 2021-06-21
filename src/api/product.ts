@@ -28,7 +28,10 @@ productRouter.get(
 );
 
 productRouter.post('/', async (req: express.Request, res: express.Response) => {
-  const { name, price, categoryId } = req.body;
+  const { name } = req.body;
+  const price = Number(req.body.price);
+  const categoryId = Number(req.body.categoryId);
+
   if (!categoryId)
     return res.status(400).json({ message: 'Category not specified' });
 
@@ -43,11 +46,28 @@ productRouter.post('/', async (req: express.Request, res: express.Response) => {
     const newProduct = await prisma.product.create({
       data: { name, price, category: { connect: { id: categoryId } } },
     });
-    return res.json(newProduct);
+    return res.json({ newProduct });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ error });
   }
 });
+
+productRouter.delete(
+  '/:id',
+  async (req: express.Request, res: express.Response) => {
+    const id = Number(req.params.id);
+
+    try {
+      await prisma.product.delete({
+        where: { id },
+      });
+      return res.sendStatus(204);
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ error });
+    }
+  }
+);
 
 export default productRouter;
