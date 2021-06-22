@@ -15,10 +15,9 @@ const jsonErrorHandler: ErrorRequestHandler = (
 ) => {
   res.status(500).json({ error });
 };
+app.use(express.static(path.resolve('client', 'build')));
 
 app.use(express.json());
-
-app.use(express.static(path.resolve('/client/dist')));
 
 app.use('/api/user', userRouter);
 app.use('/api/product', productRouter);
