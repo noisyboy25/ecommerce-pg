@@ -8,20 +8,30 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <div className="container mx-auto">
-          <nav>
+          <nav className="p-2">
             <ul className="flex flex-row content-around text-center">
               <li className="flex-1">
-                <NavLink exact to="/" activeStyle={{ color: 'blue' }}>
+                <NavLink
+                  exact
+                  to="/"
+                  activeClassName="text-white bg-blue-500 p-2 rounded-lg"
+                >
                   Home
                 </NavLink>
               </li>
               <li className="flex-1">
-                <NavLink to="/categories" activeStyle={{ color: 'blue' }}>
+                <NavLink
+                  to="/categories"
+                  activeClassName="text-white bg-blue-500 p-2 rounded-lg"
+                >
                   Categories
                 </NavLink>
               </li>
               <li className="flex-1">
-                <NavLink to="/products" activeStyle={{ color: 'blue' }}>
+                <NavLink
+                  to="/products"
+                  activeClassName="text-white bg-blue-500 p-2 rounded-lg"
+                >
                   Products
                 </NavLink>
               </li>
